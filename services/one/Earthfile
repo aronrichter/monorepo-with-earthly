@@ -1,0 +1,18 @@
+VERSION 0.8
+
+deps:
+    FROM golang:1.22.3
+    WORKDIR /services/one
+    COPY ../../libs/log+artifact/* /libs/log
+    COPY go.mod go.sum ./
+    RUN go mod download
+
+compile:
+    FROM +deps
+    COPY main.go .
+    RUN go build -o service-one main.go
+
+docker:
+    FROM +compile
+    ENTRYPOINT ["./service-one"] 
+    SAVE IMAGE service-one:latest

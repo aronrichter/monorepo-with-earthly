@@ -1,0 +1,12 @@
+VERSION 0.8
+
+deps:
+    FROM golang:1.22.3
+    WORKDIR /libs/log
+    COPY go.mod go.sum ./
+    RUN go mod download
+
+artifact:
+    FROM +deps
+    COPY log.go .
+    SAVE ARTIFACT .
